@@ -2,13 +2,13 @@ substitutions:
   name: esphome-web-c7aeb0
   friendly_name: Xiaozhi Breadboard
 
-  imagemodel: "Jarvis" # (options are: Alfred,Astrobot,Casita,Dory,EVE,Eyes,Girl1,GLaDOS,Guy1,Guy2,Harley,Jarvis,Mario,Prime,Robot,Robotgirl)
+  imagemodel: Gwen # (options are: Alfred,Astrobot,Casita,Dory,EVE,Eyes,Girl1,GLaDOS,Guy1,Guy2,Harley,Jarvis,Mario,Prime,Robot,Robotgirl)
 
   imagewidth: "240"
-  imageheight: "240" # 240 or 320 (round or square)
+  imageheight: "320" # 240 or 320 (round or square)
 
-  displaymodel: "GC9A01A" # ILI9341 or GC9A01A
-  invertcolors: "true" # true or false (ILI9341 false, GC9A01A true)
+  displaymodel: "st7789v" # ILI9341 or GC9A01A
+  invertcolors: "false" # true or false (ILI9341 false, GC9A01A true)
 
   loading_illustration_file: https://github.com/RealDeco/xiaozhi-esphome/raw/main/images/${imagemodel}/${imagewidth}x${imageheight}/loading.png
   idle_illustration_file: https://github.com/RealDeco/xiaozhi-esphome/raw/main/images/${imagemodel}/${imagewidth}x${imageheight}/idle.png
@@ -73,6 +73,7 @@ esp32:
       CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
       CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
 
+  variant: ESP32S3
 psram:
   mode: octal
   speed: 80MHz
@@ -166,8 +167,8 @@ light:
     pin: GPIO48
     default_transition_length: 0s
     chipset: WS2812
-    num_leds: 1
-    rgb_order: grb
+    num_leds: 10
+    channel_colors: GRB
     effects:
       - pulse:
           name: "Slow Pulse"
@@ -208,7 +209,7 @@ speaker:
     dac_type: external
     i2s_dout_pin:   
       number: GPIO7 # DIN Pin of the MAX98357A Audio Amplifier
-    channel: stereo
+    channel: mono
     buffer_duration: 1000ms
 
 media_player:
@@ -910,8 +911,8 @@ color:
 
 spi:
   - id: spi_bus
-    clk_pin: 14
-    mosi_pin: 17
+    clk_pin: GPIO21
+    mosi_pin: GPIO47
 
 display:
   - platform: ili9xxx
@@ -919,10 +920,10 @@ display:
     model: ${displaymodel}
     invert_colors: ${invertcolors}
     data_rate: 40MHz
-    cs_pin: 13
-    dc_pin: 10
+    cs_pin: GPIO41
+    dc_pin: GPIO40
     reset_pin:
-      number: 18
+      number: GPIO45
 #      inverted: true
     update_interval: never
     dimensions:
